@@ -100,7 +100,7 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
             const authorName = oldMessage.author.username;
             const channelName = oldMessage.channel.name;
             // Change timezone here
-            const timestamp = moment().tz('Europe/Berlin').format('DD-MM-YYYY HH:mm:ss');
+            const timestamp = moment().tz('Europe/Berlin').format('YYYY-MM-DD HH:mm:ss');
             const editedMessageContent = `Message from user ${authorId} (${authorName}) in channel #${channelName} edited at ${timestamp}\n\n**Before:**\n${oldContent}\n\n**After:**\n${newContent}`;
 
             await axios.post(webhookUrl, {
