@@ -48,13 +48,13 @@ client.on('messageCreate', async message => {
             const sourceGuildName = message.guild.name;
             const channelName = message.channel.name;
             // Change timezone here
-            const timestamp = moment().tz('Europe/Berlin').format('DD-MM-YYYY HH:mm:ss');
+            const timestamp = moment().tz('Europe/Berlin').format('YYYY-MM-DD HH:mm:ss');
 
             // Create the first line with source guild, roles and author details
             let authorRoles = message.member.roles.cache.filter(role => role.name !== '@everyone').map(role => role.name).join(', ');
-            const authorRolesLine = authorRoles ? `Rollen: ${authorRoles}` : '';
+            const authorRolesLine = authorRoles ? `Roles: ${authorRoles}` : '';
             const authorDetailsLine = `**[${message.author.id} - ${message.author.tag}]${authorRolesLine ? ' - ' + authorRolesLine : ''} in #${channelName}**`;
-            const sourceGuildLine = `Neue Nachricht in "${sourceGuildName}"`;
+            const sourceGuildLine = `New message in "${sourceGuildName}"`;
 
             // Create the basic message with the counters
             let content = `${sourceGuildLine}\n${authorDetailsLine}\n\n${message.content}\n\n*Sent at ${timestamp}*\n\n`;
