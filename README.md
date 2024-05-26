@@ -6,3 +6,5 @@ I'm not responsible for any damages or bans this software may cause after being 
 
 
 Part of this script is still in german but will be translated later. If you use this software for anything public please credit me as an author :)
+
+There should be no calls made to the discord API so you should be pretty safe if you use it. Still..  I do not take resposibility if you get banned.
