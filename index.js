@@ -34,7 +34,7 @@ app.get('/messages', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Webserver läuft auf http://localhost:${port}`);
+    console.log(`Webserver runs on http://localhost:${port}`);
 });
 
 client.on('ready', () => {
@@ -47,6 +47,7 @@ client.on('messageCreate', async message => {
         try {
             const sourceGuildName = message.guild.name;
             const channelName = message.channel.name;
+            // Change timezone here
             const timestamp = moment().tz('Europe/Berlin').format('DD-MM-YYYY HH:mm:ss');
 
             // Create the first line with source guild, roles and author details
@@ -56,12 +57,12 @@ client.on('messageCreate', async message => {
             const sourceGuildLine = `Neue Nachricht in "${sourceGuildName}"`;
 
             // Create the basic message with the counters
-            let content = `${sourceGuildLine}\n${authorDetailsLine}\n\n${message.content}\n\n*Gesendet am ${timestamp}*\n\n`;
+            let content = `${sourceGuildLine}\n${authorDetailsLine}\n\n${message.content}\n\n*Sent at ${timestamp}*\n\n`;
 
             // Check whether media, files or stickers have been attached
             if (message.attachments.size > 0) {
                 const attachmentLinks = message.attachments.map(attachment => attachment.url).join('\n');
-                content += `\n\n**Anhänge:**\n${attachmentLinks}`;
+                content += `\n\n**Attachments:**\n${attachmentLinks}`;
             }
 
             if (message.stickers.size > 0) {
@@ -74,16 +75,16 @@ client.on('messageCreate', async message => {
                 content: content
             });
 
-            console.log('Nachricht erfolgreich gespiegelt:', content);
+            console.log('Message successfully mirrored:', content);
 
             // Save the message to the chat file
             fs.appendFile(chatFilePath, `${timestamp} - ${message.author.tag}: ${message.content}\n`, 'utf8', (err) => {
                 if (err) {
-                    console.error('Fehler beim Speichern der Nachricht in die Chat-Datei:', err);
+                    console.error('Error saving content to chat file:', err);
                 }
             });
         } catch (error) {
-            console.error('Fehler beim Spiegeln der Nachricht:', error);
+            console.error('Error mirroring message:', error);
         }
     }
 });
@@ -98,16 +99,17 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
             const authorId = oldMessage.author.id;
             const authorName = oldMessage.author.username;
             const channelName = oldMessage.channel.name;
+            // Change timezone here
             const timestamp = moment().tz('Europe/Berlin').format('DD-MM-YYYY HH:mm:ss');
-            const editedMessageContent = `Nachricht von Benutzer ${authorId} (${authorName}) im Kanal #${channelName} bearbeitet am ${timestamp}\n\n**Vorher:**\n${oldContent}\n\n**Nachher:**\n${newContent}`;
+            const editedMessageContent = `Message from user ${authorId} (${authorName}) in channel #${channelName} edited at ${timestamp}\n\n**Before:**\n${oldContent}\n\n**After:**\n${newContent}`;
 
             await axios.post(webhookUrl, {
                 content: editedMessageContent
             });
 
-            console.log('Nachricht erfolgreich bearbeitet:', editedMessageContent);
+            console.log('Message successfully edited:', editedMessageContent);
         } catch (error) {
-            console.error('Fehler beim Senden der bearbeiteten Nachricht:', error);
+            console.error('Error sending edited message:', error);
         }
     }
 });
